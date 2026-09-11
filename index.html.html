@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultoría en Automatización | IRTRA Petapa</title>
+    <!-- Google Fonts & FontAwesome para iconos -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #131c31;
+            --accent-green: #00ff88;
+            --accent-blue: #00d2ff;
+            --accent-red: #ff3366;
+            --text-main: #f0f4f8;
+            --text-muted: #94a3b8;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .brand-logo {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* BARRA DE NAVEGACIÓN */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: rgba(11, 15, 25, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .brand-logo {
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: var(--accent-green);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        nav ul li a:hover {
+            color: var(--accent-blue);
+        }
+
+        /* SECCIÓN HERO (INICIO) */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 140px 8% 80px;
+            position: relative;
+            background: radial-gradient(circle at 80% 20%, rgba(0, 210, 255, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 10% 80%, rgba(0, 255, 136, 0.08) 0%, transparent 40%);
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero-badge {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--accent-green);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 20px;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #fff, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-green), #00b359);
+            color: #0b0f19;
+            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 255, 136, 0.5);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        /* CONTENEDOR GENERAL DE SECCIONES */
+        section {
+            padding: 100px 8%;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .section-title p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        /* INTEGRANTES (AVATARES IA) */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .team-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+        }
+
+        .team-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(0, 210, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .avatar-container {
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--accent-blue);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
+        }
+
+        .avatar-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .team-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .team-card span {
+            color: var(--accent-green);
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .team-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* SECCIÓN TINKERCAD & CIRCUITO */
+        .circuit-container {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .circuit-viewer {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .iframe-wrapper {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .iframe-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .code-box {
+            background: #080c14;
+            padding: 20px;
+            border-radius: 12px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+            color: var(--accent-green);
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* MULTIMEDIA: INFOGRAFÍA Y PODCAST */
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .media-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .media-card h3 {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .media-card h3 i {
+            color: var(--accent-blue);
+        }
+
+        .infographic-preview {
+            width: 100%;
+            height: 250px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            background: #1e293b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+        }
+
+        .infographic-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .podcast-player {
+            background: #080c14;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        /* DOCUMENTOS (PDF INVESTIGACIÓN Y GITHUB) */
+        .docs-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .doc-btn {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 30px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: var(--transition);
+            min-width: 280px;
+        }
+
+        .doc-btn i {
+            font-size: 2rem;
+            color: var(--accent-green);
+        }
+
+        .doc-btn div span {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: block;
+        }
+
+        .doc-btn div b {
+            font-size: 1rem;
+        }
+
+        .doc-btn:hover {
+            border-color: var(--accent-green);
+            transform: translateY(-4px);
+        }
+
+        /* SECCIÓN DE CONTACTO (IRTRA PETAPA) */
+        .contact-section {
+            background: linear-gradient(180deg, var(--bg-color), var(--card-bg));
+            text-align: center;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--accent-blue);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 40px 8%;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 120px;
+            }
+            .hero-content {
+                max-width: 100%;
+            }
+            .btn-group {
+                justify-content: center;
+            }
+            .circuit-container {
+                grid-template-columns: 100%;
+            }
+            nav ul {
+                display: none; /* Simplificado para móviles */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BARRA DE NAVEGACIÓN -->
+    <header>
+        <div class="brand-logo">
+            <i class="fa-solid fa-microchip"></i> [NOMBRE DE TU EMPRESA]
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#equipo">Equipo</a></li>
+                <li><a href="#circuito">Circuito & C++</a></li>
+                <li><a href="#multimedia">Multimedia</a></li>
+                <li><a href="#documentos">Documentos</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- INICIO / HERO SECTION -->
+    <section id="inicio" class="hero">
+        <div class="hero-content">
+            <span class="hero-badge">Consultoría Técnica • IRTRA Petapa[span_4](start_span)[span_4](end_span)</span>
+            <h1>Soluciones Autónomas para <span>Entretenimiento Seguro</span></h1>
+            <p>Sistema inteligente automatizado diseñado exclusivamente para optimizar la seguridad, eficiencia energética y operación del parque de atracciones, alineado estrictamente con los Objetivos de Desarrollo Sostenible (ODS)[span_5](start_span)[span_5](end_span).</p>
+            <div class="btn-group">
+                <a href="#circuito" class="btn btn-primary"><i class="fa-solid fa-play"></i> Ver Prototipo</a>
+                <a href="#documentos" class="btn btn-outline"><i class="fa-solid fa-file-pdf"></i> Informe Técnico</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN INTEGRANTES -->
+    <section id="equipo">
+        <div class="section-title">
+            <h2>Nuestro Equipo de Ingeniería</h2>
+            <p>Integrantes de la firma y avatares oficiales generados por IA[span_6](start_span)[span_6](end_span)</p>
+        </div>
+        <div class="team-grid">
+            <!-- Integrante 1 -->
+            <div class="team-card">
+                <div class="avatar-container">
+                    <img src="ruta_avatar_1.png" alt="Avatar Integrante 1">
+                </div>
+                <h3>[Nombre Apellido 1]</h3>
+                <span>Especialista en Automatización</span>
+                <p>Encargado del desarrollo de la lógica de programación en C++ y simulación lógica.</p>
+            </div>
+            <!-- Integrante 2 -->
+            <div class="team-card">
+                <div class="avatar-container">
+                    <img src="ruta_avatar_2.png" alt="Avatar Integrante 2">
+                </div>
+                <h3>[Nombre Apellido 2]</h3>
+                <span>Ingeniero de Prototipado</span>
+                <p>Responsable del diseño de circuitos en Tinkercad y validación de componentes físicos.</p>
+            </div>
+            <!-- Integrante 3 -->
+            <div class="team-card">
+                <div class="avatar-container">
+                    <img src="ruta_avatar_3.png" alt="Avatar Integrante 3">
+                </div>
+                <h3>[Nombre Apellido 3]</h3>
+                <span>Director de Investigación</span>
+                <p>A cargo de la documentación técnica formal, marco teórico y referencias en formato APA[span_7](start_span)[span_7](end_span).</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN CIRCUITO TINKERCAD Y CÓDIGO C++ -->
+    <section id="circuito">
+        <div class="section-title">
+            <h2>Simulación Tinkercad & Código Fuente</h2>
+            <p>Prototipo funcional implementado con Arduino Uno R3 y programación en C++ nativo[span_8](start_span)[span_8](end_span)</p>
+        </div>
+        <div class="circuit-container">
+            <div class="circuit-viewer">
+                <h3 style="margin-bottom: 15px; font-size: 1.1rem;"><i class="fa-solid fa-eye"></i> Vista Interactiva del Circuito</h3>
+                <div class="iframe-wrapper">
+                    <!-- REEMPLAZA EL ENLACE 'src' CON TU COMPARTIR / EMBED DE TINKERCAD -->
+                    <iframe src="https://www.tinkercad.com/embed/TU_ENLACE_DE_TINKERCAD_AQUI" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div>
+                <h3 style="margin-bottom: 15px; font-size: 1.1rem;"><i class="fa-solid fa-code"></i> Código C++ (Arduino)</h3>
+                <pre class="code-box"><code>
+// ==========================================
+// PROYECTO FINAL: IRTRA PETAPA
+// Autores: [Apellidos del Equipo][span_9](start_span)[span_9](end_span)
+// ==========================================
+
+const int pinSensor = A0; 
+const int pinLed = 13;
+
+void setup() {
+  pinMode(pinLed, OUTPUT);
+  Serial.begin(9600);
+  // Inicialización de componentes
+}
+
+void loop() {
+  int lectura = analogRead(pinSensor);
+  
+  if (lectura > 500) {
+    digitalWrite(pinLed, HIGH); // Activar sistema de alerta
+  } else {
+    digitalWrite(pinLed, LOW);
+  }
+  
+  delay(100);
+}
+                </code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN MULTIMEDIA (INFOGRAFÍA Y PODCAST) -->
+    <section id="multimedia">
+        <div class="section-title">
+            <h2>Centro Multimedia</h2>
+            <p>Infografía ejecutiva del proyecto y Podcast explicativo para las autoridades del IRTRA[span_10](start_span)[span_10](end_span)</p>
+        </div>
+        <div class="media-grid">
+            <!-- Infografía -->
+            <div class="media-card">
+                <div>
+                    <h3><i class="fa-solid fa-image"></i> Infografía del Proyecto</h3>
+                    <div class="infographic-preview">
+                        <!-- Pon tu imagen de infografía aquí -->
+                        <img src="ruta_infografia.png" alt="Infografía del Proyecto IRTRA">
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Resumen gráfico con ODS impactado, materiales técnicos y datos clave[span_11](start_span)[span_11](end_span).</p>
+                </div>
+                <a href="ruta_infografia.png" target="_blank" class="btn btn-outline" style="width: 100%; margin-top: 20px; justify-content: center;"><i class="fa-solid fa-expand"></i> Ver en Pantalla Completa</a>
+            </div>
+
+            <!-- Podcast -->
+            <div class="media-card">
+                <div>
+                    <h3><i class="fa-solid fa-podcast"></i> Podcast Informativo</h3>
+                    <div class="podcast-player">
+                        <!-- INSERTA AQUÍ TU REPRODUCTOR DE AUDIO O IFRAME DE YOUTUBE OCULTO -->
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px;">Explicación lógica e impacto técnico (Máx. 5 mins)[span_12](start_span)[span_12](end_span):</p>
+                        <audio controls style="width: 100%;">
+                            <source src="ruta_audio_podcast.mp3" type="audio/mpeg">
+                            Tu navegador no soporta el elemento de audio.
+                        </audio>
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Análisis detallado de la solución aplicada a las instalaciones del parque.</p>
+                </div>
+                <a href="URL_DE_TU_VIDEO_YOUTUBE_OCULTO" target="_blank" class="btn btn-outline" style="width: 100%; justify-content: center;"><i class="fa-brands fa-youtube"></i> Abrir en YouTube</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN DOCUMENTOS Y REPOSITORIO -->
+    <section id="documentos">
+        <div class="section-title">
+            <h2>Documentación & Repositorio</h2>
+            <p>Acceso directo al informe técnico y archivos fuente en GitHub[span_13](start_span)[span_13](end_span)</p>
+        </div>
+        <div class="docs-container">
+            <!-- Documento Word/PDF -->
+            <a href="ruta_documento_investigacion.pdf" target="_blank" class="doc-btn">
+                <i class="fa-solid fa-file-pdf"></i>
+                <div>
+                    <span>Documento Formal</span>
+                    <b>Informe de Investigación (.PDF)[span_14](start_span)[span_14](end_span)</b>
+                </div>
+            </a>
+            <!-- Enlace GitHub -->
+            <a href="https://github.com/TU_USUARIO/TU_REPOSITORIO" target="_blank" class="doc-btn">
+                <i class="fa-brands fa-github"></i>
+                <div>
+                    <span>Código y Recursos</span>
+                    <b>Repositorio en GitHub[span_15](start_span)[span_15](end_span)</b>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- SECCIÓN CONTACTO EMPRESA -->
+    <section id="contacto" class="contact-section">
+        <div class="section-title">
+            <h2>Contacto Institucional</h2>
+            <p>¿Dudas o revisión técnica para la administración del IRTRA Petapa?[span_16](start_span)[span_16](end_span)</p>
+        </div>
+        <form class="contact-form" onsubmit="event.preventDefault(); alert('Mensaje enviado con éxito a la firma consultora.');">
+            <div class="form-group">
+                <input type="text" placeholder="Nombre / Autoridad del IRTRA" required>
+            </div>
+            <div class="form-group">
+                <input type="email" placeholder="Correo electrónico institucional" required>
+            </div>
+            <div class="form-group">
+                <textarea rows="5" placeholder="Escriba su consulta o comentario técnico sobre el sistema..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="justify-content: center;"><i class="fa-solid fa-paper-plane"></i> Enviar Mensaje</button>
+        </form>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 [NOMBRE DE TU EMPRESA] • Proyecto Final de Tecnología Aplicada | IRTRA Petapa[span_17](start_span)[span_17](end_span). Todos los derechos reservados.</p>
+    </footer>
+
+</body>
+</html>
