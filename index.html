@@ -534,30 +534,115 @@
             <div>
                 <h3 style="margin-bottom: 15px; font-size: 1.1rem;"><i class="fa-solid fa-code"></i> Código C++ (Arduino)</h3>
                 <pre class="code-box"><code>
-// ==========================================
-// PROYECTO FINAL: IRTRA PETAPA
-// Autores: [Apellidos del Equipo][span_9](start_span)[span_9](end_span)
-// ==========================================
+/* ============================================================
+   EcoQueue-IRTRA
+   Sistema Automatizado de Monitoreo y Control de Aforo
+   ============================================================
+   Mapeo de pines (según el circuito enviado):
 
-const int pinSensor = A0; 
-const int pinLed = 13;
+     PIR (OUT)          -> D7
+     HC-SR04 TRIG       -> D9
+     HC-SR04 ECHO       -> D8
+     LED RGB  Rojo       -> D3  (PWM)
+     LED RGB  Verde      -> D5  (PWM)
+     LED RGB  Azul       -> D4  (¡OJO! D4 NO es pin PWM en el Uno,
+                                 por eso el azul solo enciende/apaga,
+                                 no se puede atenuar. Si quieres que
+                                 module intensidad, muévelo a D6 y
+                                 actualiza BLUE_PIN abajo)
+     Buzzer (+)          -> D10
+     LDR (divisor)       -> A0
+     Cátodo común LED,
+     GND del HC-SR04,
+     GND del buzzer      -> GND del Arduino
+   ============================================================ */
+
+const int pirPin    = 7;
+const int trigPin   = 9;
+const int echoPin   = 8;
+const int buzzerPin = 10;
+const int ldrPin    = A0;
+
+const int redPin    = 3;
+const int greenPin  = 5;
+const int bluePin   = 4;   // no-PWM, ver nota arriba
+
+// --- Umbrales de distancia (ajusta según tu maqueta, en cm) ---
+const int DIST_DESPEJADA = 50;  // > 50 cm  -> fila despejada (verde)
+const int DIST_MEDIA     = 20;  // 20-50 cm -> aforo medio (amarillo)
+                                  // < 20 cm  -> fila llena (rojo)
+
+// --- Umbral de luz para modo nocturno (ajusta probando en Tinkercad) ---
+const int UMBRAL_OSCURIDAD = 400; // lectura LDR por debajo = "de noche"
 
 void setup() {
-  pinMode(pinLed, OUTPUT);
-  Serial.begin(9600);
-  // Inicialización de componentes
+  pinMode(pirPin, INPUT);
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  pinMode(buzzerPin, OUTPUT);
+
+  pinMode(redPin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
+  pinMode(bluePin, OUTPUT);
+
+  Serial.begin(9600); // para depurar y confirmar que el circuito responde
 }
 
 void loop() {
-  int lectura = analogRead(pinSensor);
-  
-  if (lectura > 500) {
-    digitalWrite(pinLed, HIGH); // Activar sistema de alerta
+  bool movimiento = digitalRead(pirPin) == HIGH;
+  long distancia = leerDistanciaCM();
+  int luzAmbiente = analogRead(ldrPin);
+  bool esDeNoche = luzAmbiente < UMBRAL_OSCURIDAD;
+
+  // --- Lógica de aforo ---
+  if (distancia > 0 && distancia <= DIST_MEDIA) {
+    // Fila llena -> Rojo + buzzer
+    encenderColor(255, 0, 0, esDeNoche);
+    tone(buzzerPin, 1000);
+  } else if (distancia > DIST_MEDIA && distancia <= DIST_DESPEJADA) {
+    // Aforo medio -> Amarillo
+    encenderColor(255, 150, 0, esDeNoche);
+    noTone(buzzerPin);
   } else {
-    digitalWrite(pinLed, LOW);
+    // Fila despejada -> Verde
+    encenderColor(0, 255, 0, esDeNoche);
+    noTone(buzzerPin);
   }
-  
-  delay(100);
+
+  // --- Depuración por Serial (Monitor Serie en Tinkercad) ---
+  Serial.print("PIR: ");
+  Serial.print(movimiento);
+  Serial.print(" | Distancia: ");
+  Serial.print(distancia);
+  Serial.print(" cm | LDR: ");
+  Serial.print(luzAmbiente);
+  Serial.print(" | Noche: ");
+  Serial.println(esDeNoche);
+
+  delay(200);
+}
+
+// Envía el pulso al HC-SR04 y devuelve la distancia en cm
+long leerDistanciaCM() {
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  long duracion = pulseIn(echoPin, HIGH, 30000); // timeout 30ms (~5m)
+  if (duracion == 0) return -1; // no detectó eco (fuera de rango)
+
+  long cm = duracion * 0.0343 / 2;
+  return cm;
+}
+
+// Enciende el LED RGB con atenuación automática si es de noche
+void encenderColor(int r, int g, int b, bool esDeNoche) {
+  float factor = esDeNoche ? 0.3 : 1.0; // de noche baja la intensidad al 30%
+  analogWrite(redPin,   r * factor);
+  analogWrite(greenPin, g * factor);
+  analogWrite(bluePin,  b * factor); // en D4 esto se comporta como ON/OFF
 }
                 </code></pre>
             </div>
